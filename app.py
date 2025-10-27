@@ -24,11 +24,11 @@ def index():
     if request.method == "POST":
         text = request.form.get("text", "").strip()
         if text:
-            user_id = 1  # placeholder for single user
+            user_id = 1 
             lang = detect_lang(text)
             labels = LABELS[lang]
 
-            # --- Sentiment ---
+            # Sentiment 
             sentiment_model = MODELS["ru_sentiment"] if lang == "ru" else MODELS["en_sentiment"]
             sentiment_data = hf_infer(sentiment_model, text)
             sentiment_result = None
@@ -46,7 +46,7 @@ def index():
 
             pos_count = update_history(user_id, sentiment_result["name"] if sentiment_result else "")
 
-            # --- Emotion (EN only) ---
+            # Emotion (EN only)
             emotion_result = None
             if lang == "en":
                 emo_data = hf_infer(MODELS["emotion"], text)
@@ -59,7 +59,7 @@ def index():
                         "color": COLOR_MAP["Emotion"]
                     }
 
-            # --- Toxicity (EN only) ---
+            #  Toxicity (EN only) 
             tox_result = None
             if lang == "en":
                 tox_data = hf_infer(MODELS["toxicity"], text)
