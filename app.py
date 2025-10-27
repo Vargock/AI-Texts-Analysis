@@ -6,7 +6,6 @@ from modules.helpers import detect_lang, MODELS, LABELS, update_history, bar
 app = Flask(__name__)
 init_db()
 
-# Optional: color mapping for bars
 COLOR_MAP = {
     "POSITIVE": "green",
     "NEGATIVE": "red",
