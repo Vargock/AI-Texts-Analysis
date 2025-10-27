@@ -44,7 +44,6 @@ def detect_lang(text: str) -> str:
 
 
 def hf_infer(model: str, text: str):
-    """Call Hugging Face inference API safely."""
     try:
         resp = requests.post(
             f"https://api-inference.huggingface.co/models/{model}",
