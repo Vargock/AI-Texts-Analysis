@@ -1,0 +1,5 @@
+# local models, env files, venv
+.env
+.env.local
+.venv/
+__pycache__/
