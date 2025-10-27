@@ -1,3 +1,12 @@
-This is a simple Telegram bot that uses the Hugging Face API to detect the sentiment of text messages. I don’t provide hosting for it, so to use it, you’ll need to create your own Telegram bot and Hugging Face API keys. Then, put them into a .env file in the root folder, following the format in the .env.example file.
+---
+title: Text Sentiment Analyzer
+emoji: 😎
+colorFrom: blue
+colorTo: pink
+sdk: flask
+app_file: app.py
+pinned: false
+---
 
-Simply copy .env.example to .env and fill in your keys.
+# Text Sentiment Analyzer
+This was originally designed as a simple Telegram bot that uses the Hugging Face API to detect the sentiment of text messages, but for easier testing and hosting I decided to switch it to Flask-based web version.
