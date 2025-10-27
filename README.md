@@ -3,7 +3,7 @@ title: Text Sentiment Analyzer
 emoji: 😎
 colorFrom: blue
 colorTo: pink
-sdk: flask
+sdk: gradio
 app_file: app.py
 pinned: false
 ---
