@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <body>
+        <h1>AI Text Analysis</h1>
+        <form method="post">
+            <textarea name="text" placeholder="Type your message...">{{ request.form.text or '' }}</textarea>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if result %}
+        <hr>
+        <h2>Result</h2>
+
+        {% if result.sentiment %}
+        <p>Sentiment: <strong>{{ result.sentiment.name }}</strong> ({{ result.sentiment.score }}%)</p>
+        <p class="bar" style="color: {{ result.sentiment.color }}">{{ result.sentiment.bar }}</p>
+        <p>Positive in last 5 messages: {{ result.pos_count }}/5</p>
+        {% endif %}
+
+        {% if result.emotion %}
+        <p>Emotion: <strong>{{ result.emotion.name }}</strong> ({{ result.emotion.score }}%)</p>
+        <p class="bar" style="color: {{ result.emotion.color }}">{{ result.emotion.bar }}</p>
+        {% endif %}
+
+        {% if result.toxicity %}
+        <p>Toxicity: <strong>{{ result.toxicity.name }}</strong> ({{ result.toxicity.score }}%)</p>
+        <p class="bar" style="color: {{ result.toxicity.color }}">{{ result.toxicity.bar }}</p>
+        {% endif %}
+        {% endif %}
+
+
+        {% if history %}
+        <h2>Recent Messages</h2>
+        <table>
+            <tr>
+                <th>Text</th>
+                <th>Sentiment</th>
+                <th>Confidence</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for text, sentiment, confidence, timestamp in history %}
+            <tr>
+                <td>{{ text }}</td>
+                <td>{{ sentiment }}</td>
+                <td>{{ '%.1f' % (confidence*100) }}%</td>
+                <td>{{ timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </body>
+
+</html>
