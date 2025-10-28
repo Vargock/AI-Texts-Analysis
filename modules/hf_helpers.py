@@ -1,6 +1,9 @@
 import requests
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 HF_API_TOKEN = os.getenv("HF_API_TOKEN")
 log = logging.getLogger(__name__)
@@ -16,7 +19,7 @@ def hf_infer(model: str, text: str):
         resp.raise_for_status()
         out = resp.json()
 
-        # Normalize: dict → list, flatten nested list
+        # Normalize API output from dict → list[]
         if isinstance(out, dict):
             out = [out]
         elif isinstance(out, list) and len(out) == 1 and isinstance(out[0], list):
@@ -24,7 +27,9 @@ def hf_infer(model: str, text: str):
 
         # Filter invalid entries
         out = [x for x in out if isinstance(x, dict) and "label" in x and "score" in x]
+
         return out
+    
     except Exception as e:
         log.warning(f"HF inference failed ({model}): {e}")
         return []
