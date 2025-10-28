@@ -11,6 +11,7 @@ DB_PATH = os.path.join(DB_FOLDER, "data.db")
 
 _conn: Optional[sqlite3.Connection] = None
 
+
 def get_db_connection() -> Optional[sqlite3.Connection]:
     global _conn
     if _conn:
@@ -24,6 +25,7 @@ def get_db_connection() -> Optional[sqlite3.Connection]:
         logger.error("Database connection error: %s", e)
         return None
 
+
 def init_db() -> None:
     conn = get_db_connection()
     if not conn:
@@ -34,22 +36,23 @@ def init_db() -> None:
         cur.execute("""
         CREATE TABLE IF NOT EXISTS history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
+            user_id TEXT NOT NULL,
             text TEXT NOT NULL,
             sentiment TEXT NOT NULL,
             confidence REAL NOT NULL,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        )""")
+        )
+        """)
         cur.execute("CREATE INDEX IF NOT EXISTS idx_user_id ON history(user_id)")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON history(timestamp)")
-        cur.execute("CREATE INDEX IF NOT EXISTS idx_user_timestamp ON history(user_id, timestamp)")
         conn.commit()
         logger.info("Database initialized")
     except sqlite3.Error as e:
         logger.exception("Database initialization error: %s", e)
         raise
 
-def save_message(user_id: int, text: str, sentiment: str, confidence: float) -> bool:
+
+def save_message(user_id: str, text: str, sentiment: str, confidence: float) -> bool:
     conn = get_db_connection()
     if not conn:
         return False
@@ -69,7 +72,8 @@ def save_message(user_id: int, text: str, sentiment: str, confidence: float) -> 
             pass
         return False
 
-def get_recent(user_id: int, limit: int = 10) -> List[Tuple]:
+
+def get_recent(user_id: str, limit: int = 10) -> List[Tuple]:
     conn = get_db_connection()
     if not conn:
         return []
@@ -80,7 +84,8 @@ def get_recent(user_id: int, limit: int = 10) -> List[Tuple]:
         FROM history
         WHERE user_id = ?
         ORDER BY timestamp DESC
-        LIMIT ?""", (user_id, limit))
+        LIMIT ?
+        """, (user_id, limit))
         rows = cur.fetchall()
         return [tuple(r) for r in rows]
     except sqlite3.Error as e:
